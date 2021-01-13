@@ -1,0 +1,18 @@
+{
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "build:client": "yarn workspace model-level-validations-with-jsonSchema-client build",
+    "dev": "yarn workspace model-level-validations-with-jsonSchema-server dev",
+    "dev:debug": "yarn workspace model-level-validations-with-jsonSchema-server dev:debug",
+    "heroku-postbuild": "yarn workspace model-level-validations-with-jsonSchema-client build",
+    "start": "yarn workspace model-level-validations-with-jsonSchema-server start"
+  },
+  "engines": {
+    "node": "^14.15"
+  }
+}
