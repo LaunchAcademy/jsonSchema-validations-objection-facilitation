@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 
-import ContactForm from "./components/ContactForm";
+import UnicornForm from "./components/UnicornForm";
 import config from "./config";
 import RedBox from "redbox-react";
 
@@ -11,12 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (reactElement) {
     if (config.env === "development") {
       try {
-        render(<ContactForm />, reactElement);
+        render(<UnicornForm />, reactElement);
       } catch (e) {
         render(<RedBox error={e} />, reactElement);
       }
     } else {
-      render(<ContactForm />, reactElement);
+      render(<UnicornForm />, reactElement);
     }
   }
 });
