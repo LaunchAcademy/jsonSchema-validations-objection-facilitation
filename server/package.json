@@ -17,7 +17,7 @@
   "version": "0.0.1",
   "name": "model-level-validations-with-jsonSchema-server",
   "engines": {
-    "node": "^14.15"
+    "node": "^16.18"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
