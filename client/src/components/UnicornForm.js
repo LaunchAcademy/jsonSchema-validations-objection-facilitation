@@ -31,8 +31,11 @@ const UnicornForm = props => {
         }),
         body: JSON.stringify(newUnicorn)
       })
+      // error handling 
       if (!response.ok) {
         if(response.status == 422) {
+
+          // rendering the errors
           const body = await response.json()
           const newErrors = translateServerErrors(body.errors)
           return setErrors(newErrors)
@@ -41,7 +44,9 @@ const UnicornForm = props => {
           const error = new Error(errorMessage)
           throw(error)
         }
+
       } else {
+        // HAPPY PATH
         const body = await response.json()
         console.log("We did it! The new unicorn is:")
         console.log(body)
@@ -54,6 +59,10 @@ const UnicornForm = props => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+
+    // we could check for the required fields here as well, and then wouldnt encounter DB errors. But we want to ensure our swiss cheese model
+    // is properly redundant 
+
     addUnicorn()
   }
 

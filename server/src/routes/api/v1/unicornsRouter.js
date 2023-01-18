@@ -2,7 +2,7 @@ import express from "express"
 import objection from "objection"
 const { ValidationError } = objection
 
-import Unicorn from "../../../models/index.js"
+import { Unicorn } from "../../../models/index.js"
 import cleanUserInput from "../../../services/cleanUserInput.js"
 
 const unicornsRouter = new express.Router()
@@ -12,8 +12,8 @@ unicornsRouter.post("/", async (req, res) => {
   const formInput = cleanUserInput(body) // remove empty strings from submitted data
 
   try {
-    // const newUnicorn = await Unicorn.query().insertAndFetch(formInput) // attempt to persist the unicorn
-      const newUnicorn = await Unicorn.query().insert({age: true, magicalAbility: "Tis the chosen one"})
+    const newUnicorn = await Unicorn.query().insertAndFetch(formInput) // attempt to persist the unicorn
+      // const newUnicorn = await Unicorn.query().insert({age: true, magicalAbility: "Tis the chosen one"})
 
     return res.status(201).json({ newUnicorn }) // if persisting is successful, send the newly persisted unicorn back to the frontend for display!
   } catch (error) {
