@@ -1,5 +1,6 @@
 import _ from 'lodash'
-let translateServerErrors = (errors) => {
+
+const translateServerErrors = (errors) => {
   let serializedErrors = {}
 
   Object.keys(errors).forEach((key) => {

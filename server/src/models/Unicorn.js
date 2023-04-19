@@ -1,21 +1,28 @@
 const Model = require("./Model");
 
-class Unicorn extends Model {
+const uniqueFactory = require("objection-unique")
+
+const unique = uniqueFactory({
+  fields: ["name"],
+  identifiers: ["id"]
+})
+
+class Unicorn extends unique(Model) {
   static get tableName() {
     return "unicorns"
   }
 
   static get jsonSchema() {
-     return {
-       type: "object",
-       required: ["name"],
-       properties: {
-         name: { type: "string", minLength: 1, maxLength: 20 },
-         magicalAbility: { type: "string", minLength: 3, maxLength: 100 },
-         age: { type: ["integer", "string"] }
-       }
-     }
-   }
+    return {
+      type: "object",
+      required: ["name"],
+      properties: {
+        name: { type: "string" },
+        age: { type: ["integer", "string"] },
+        magicalAbility: { type: "string", minLength: 3}
+      }
+    }
+  }
 }
 
 module.exports = Unicorn

@@ -1,12 +1,18 @@
 import React, { useState } from "react";
-import { hot } from "react-hot-loader/root";
-
-import "../assets/scss/main.scss";
+import { Redirect } from "react-router-dom"
 
 import translateServerErrors from "../services/translateServerErrors"
 import ErrorList from "./ErrorList"
 
+// build out the post fetch 
+// receive the happy path in the backend
+// test sending data without validations 
+// add validations to model, and review migration constraints 
+// handle new errors in backend
+// serve up to here and use translateServerErrors to display in the form
+
 const UnicornForm = props => {
+  
   const [newUnicorn, setNewUnicorn] = useState({
     name: "",
     age: "",
@@ -14,6 +20,15 @@ const UnicornForm = props => {
   })
 
   const [errors, setErrors] = useState({})
+
+  const [redirectData, setRedirectData] = useState({
+    shouldRedirect: false,
+    id: null
+  })
+
+  if (redirectData.shouldRedirect) {
+    return <Redirect to={`/unicorns/${redirectData.id}`} />
+  }
 
   const handleInputChange = event => {
     setNewUnicorn({
@@ -24,38 +39,35 @@ const UnicornForm = props => {
 
   const addUnicorn = async () => {
     try {
-      const response = await fetch("api/v1/unicorns", {
+      const response = await fetch("/api/v1/unicorns", {
         method: "POST",
+        body: JSON.stringify(newUnicorn),
         headers: new Headers({
           "Content-Type": "application/json"
-        }),
-        body: JSON.stringify(newUnicorn)
+        })
       })
-      // error handling 
-      if (!response.ok) {
-        if(response.status == 422) {
 
-          // rendering the errors
-          const body = await response.json()
-          const newErrors = translateServerErrors(body.errors)
-          return setErrors(newErrors)
-        } else {
-          const errorMessage = `${response.status} (${response.statusText})`
-          const error = new Error(errorMessage)
-          throw(error)
-        }
+      const parsedResponse = await response.json()
 
-      } else {
+      if (response.ok) {
         // HAPPY PATH
-        const body = await response.json()
-        console.log("We did it! The new unicorn is:")
-        console.log(body)
-        clearForm()
+        setRedirectData({ shouldRedirect: true, id: parsedResponse.newUnicorn.id })
+        
+      } else {
+        // SAD PATH
+        if (response.status === 422){
+          const translatedErrors = translateServerErrors(parsedResponse.errors)
+          setErrors(translatedErrors)
+        }
       }
-    } catch(err) {
-      console.error(`Error in fetch: ${err.message}`)
+
+  // ............
+
+    } catch (error) {
+      console.log(error)
     }
   }
+
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -119,4 +131,24 @@ const UnicornForm = props => {
   )
 }
 
-export default hot(UnicornForm);
+export default UnicornForm;
+
+
+
+
+
+
+
+
+
+    // const unicornData = await response.json()
+      // if (response.ok) {
+      //   console.log(newUnicorn)
+      //   // setRedirectData({ shouldRedirect: true, id: unicornData.newUnicorn.id })
+      // } else {
+      //   if (response.status === 422) {
+      //     const newErrors = translateServerErrors(unicornData.errors)
+      //   } else {
+      //     console.log("you bad")
+      //   }
+      // }
