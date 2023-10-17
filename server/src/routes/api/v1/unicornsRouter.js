@@ -1,6 +1,5 @@
 import express from "express"
-import objection from "objection"
-const { ValidationError } = objection
+import objection, { ValidationError } from "objection"
 
 import { Unicorn } from "../../../models/index.js"
 import cleanUserInput from "../../../services/cleanUserInput.js"
@@ -18,12 +17,11 @@ unicornsRouter.post("/", async (req, res) => {
 
     return res.status(201).json({ newUnicorn }) // if persisting is successful, send the newly persisted unicorn back to the frontend for display!
   } catch (error) {
-    console.log(error)
-    if (error instanceof ValidationError){
-      return res.status(422).json({ errors: error.data })
+    if (error instanceof ValidationError) {
+      res.status(422).json({ errors: error.data })
+    } else {
+      return res.status(500).json({ errors: error }) // if there was any other error, send to the frontend for potential display
     }
- 
-    return res.status(500).json({ errors: error }) // if there was any other error, send to the frontend for potential display
   }
 })
 
@@ -46,3 +44,5 @@ unicornsRouter.get("/:id", async (req, res) => {
 })
 
 export default unicornsRouter
+
+

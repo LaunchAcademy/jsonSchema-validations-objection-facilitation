@@ -15,4 +15,18 @@ const translateServerErrors = (errors) => {
   return serializedErrors
 };
 
+//   {
+//   name: [
+//     {
+//       message: 'is a required property',
+//       keyword: 'required',
+//       params: [Object]
+//     }
+//   ]
+// }
+
+        // const errors = {
+        //   name: "is a required property"
+        // }
+
 export default translateServerErrors;

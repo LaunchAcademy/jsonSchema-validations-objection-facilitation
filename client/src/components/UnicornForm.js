@@ -51,18 +51,15 @@ const UnicornForm = props => {
 
       if (response.ok) {
         // HAPPY PATH
-        setRedirectData({ shouldRedirect: true, id: parsedResponse.newUnicorn.id })
+        // setRedirectData({ shouldRedirect: true, id: parsedResponse.newUnicorn.id })
         
       } else {
         // SAD PATH
-        if (response.status === 422){
-          const translatedErrors = translateServerErrors(parsedResponse.errors)
-          setErrors(translatedErrors)
-        }
+        if (response.status === 422) {
+          const errors = translateServerErrors(parsedResponse.errors)
+          setErrors(errors)    
+        } 
       }
-
-  // ............
-
     } catch (error) {
       console.log(error)
     }
@@ -75,6 +72,7 @@ const UnicornForm = props => {
     // we could check for the required fields here as well, and then wouldnt encounter DB errors. But we want to ensure our swiss cheese model
     // is properly redundant 
 
+    // fetch post
     addUnicorn()
   }
 
@@ -137,7 +135,10 @@ export default UnicornForm;
 
 
 
-
+  // if (response.status === 422){
+  //         const translatedErrors = translateServerErrors(parsedResponse.errors)
+  //         setErrors(translatedErrors)
+  //       }
 
 
 

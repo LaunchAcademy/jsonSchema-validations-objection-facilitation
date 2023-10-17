@@ -1,13 +1,13 @@
 const Model = require("./Model");
 
-const uniqueFactory = require("objection-unique")
+// const uniqueFactory = require("objection-unique")
 
-const unique = uniqueFactory({
-  fields: ["name"],
-  identifiers: ["id"]
-})
+// const unique = uniqueFactory({
+//   fields: ["name"],
+//   identifiers: ["id"]
+// })
 
-class Unicorn extends unique(Model) {
+class Unicorn extends Model {
   static get tableName() {
     return "unicorns"
   }
@@ -17,9 +17,11 @@ class Unicorn extends unique(Model) {
       type: "object",
       required: ["name"],
       properties: {
-        name: { type: "string" },
+        name: { type: "string", minLength: 1, maxLength: 255 },
+        magicalAbility: { type: "string", minLength: 2, maxLength: 50 },
         age: { type: ["integer", "string"] },
-        magicalAbility: { type: "string", minLength: 3}
+        // isFlying: { type: ["boolean", "string"] }
+        // age: { type: "integer" }
       }
     }
   }
